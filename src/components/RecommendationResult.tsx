@@ -34,10 +34,10 @@ const RecommendationResult = () => {
             initial={{ y: -20 }}
             animate={{ y: 0 }}
             transition={{ type: 'spring', damping: 12, delay: 0.1 }}
-            className="absolute -top-14 left-1/2 -translate-x-1/2"
+            className="absolute -top-36 left-1/2 -translate-x-1/2"
           >
-            <div className="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center">
-              <img src={babiCharacter} alt="바비" className="w-20 h-20 object-contain" />
+            <div className="w-72 h-72 rounded-full bg-primary/20 flex items-center justify-center">
+              <img src={babiCharacter} alt="바비" className="w-60 h-60 object-contain" />
             </div>
           </motion.div>
           <div className="flex justify-between items-start mb-4">
