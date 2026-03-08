@@ -59,13 +59,27 @@ export const useAppStore = create<AppState>()(
       }),
 
       recommend: () => {
-        const { categoryCounts, tasteCounts, history } = get();
+        const { categoryCounts, tasteCounts, history, todayRecommendedIds, currentRecommendation } = get();
         const totalCatClicks = (Object.values(categoryCounts) as number[]).reduce((a, b) => a + b, 0);
         const totalTasteClicks = (Object.values(tasteCounts) as number[]).reduce((a, b) => a + b, 0);
 
         // Filter out restaurants rated poorly (<=2)
         const excludedIds = history.filter(h => h.userRating !== undefined && h.userRating <= 2).map(h => h.restaurant.id);
         let candidates = MOCK_RESTAURANTS.filter(r => !excludedIds.includes(r.id));
+
+        // Exclude today's already recommended menus
+        candidates = candidates.filter(r => !todayRecommendedIds.includes(r.id));
+
+        // All menus exhausted
+        if (candidates.length === 0) {
+          set({ allRecommendedToday: true });
+          return;
+        }
+
+        // Exclude the last recommended to prevent consecutive duplicates
+        if (currentRecommendation && candidates.length > 1) {
+          candidates = candidates.filter(r => r.id !== currentRecommendation.id);
+        }
 
         // Weight by category and taste preferences
         const weighted = candidates.map(r => {
@@ -102,6 +116,8 @@ export const useAppStore = create<AppState>()(
         set((s) => ({
           currentRecommendation: selected,
           history: [historyEntry, ...s.history],
+          todayRecommendedIds: [...s.todayRecommendedIds, selected.id],
+          allRecommendedToday: false,
         }));
       },
 
