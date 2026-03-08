@@ -42,7 +42,7 @@ const BabiButton = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ repeat: Infinity, duration: 2 }}
-            className="absolute -bottom-2 text-xs font-medium text-muted-foreground"
+            className="absolute -top-2 text-xs font-medium text-muted-foreground"
           >
             눌러서 추천받기!
           </motion.span>
