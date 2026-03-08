@@ -109,11 +109,21 @@ const RecommendationResult = () => {
               <Share2 size={18} />
               공유
             </button>
-            <button className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-primary text-primary-foreground font-semibold">
+            <button
+              onClick={() => setMapOpen(true)}
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-primary text-primary-foreground font-semibold"
+            >
               <Navigation size={18} />
               길찾기
             </button>
           </div>
+
+          <MapDialog
+            open={mapOpen}
+            onOpenChange={setMapOpen}
+            address={currentRecommendation.address}
+            name={currentRecommendation.name}
+          />
         </motion.div>
       </motion.div>
     </AnimatePresence>
