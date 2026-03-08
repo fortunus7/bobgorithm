@@ -8,7 +8,7 @@ const CategoryFilter = () => {
   const { categoryCounts, toggleCategory } = useAppStore();
 
   return (
-    <div className="flex gap-3 justify-center px-4">
+    <div className="flex gap-3 justify-center px-4 relative z-10">
       {categories.map((cat) => {
         const count = categoryCounts[cat];
         return (
