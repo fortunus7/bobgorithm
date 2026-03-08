@@ -13,6 +13,7 @@ interface AppState {
   toggleTaste: (taste: TastePreference) => void;
   recommend: () => void;
   setSpinning: (v: boolean) => void;
+  resetCounts: () => void;
   clearRecommendation: () => void;
   addToFavorite: (id: string) => void;
   removeFromFavorite: (id: string) => void;
@@ -41,6 +42,11 @@ export const useAppStore = create<AppState>()(
           [taste]: s.tasteCounts[taste] + 1,
         },
       })),
+
+      resetCounts: () => set({
+        categoryCounts: { '한식': 0, '중식': 0, '일식/회': 0, '양식/기타': 0 },
+        tasteCounts: { '매콤하게': 0, '느끼하지 않게': 0, '가볍게': 0, '든든하게': 0 },
+      }),
 
       recommend: () => {
         const { categoryCounts, tasteCounts, history } = get();
