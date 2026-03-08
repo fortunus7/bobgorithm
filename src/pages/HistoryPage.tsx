@@ -43,7 +43,7 @@ const HistoryPage = () => {
         </div>
       ) : (
         <div className="space-y-3">
-          {history.map((item) => (
+          {displayedHistory.map((item) => (
             <div key={item.id} className="bg-card rounded-2xl p-4 category-shadow">
               <div className="flex justify-between items-start">
                 <div className="flex-1">

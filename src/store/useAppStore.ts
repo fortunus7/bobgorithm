@@ -98,6 +98,7 @@ export const useAppStore = create<AppState>()(
 
       setSpinning: (v) => set({ isSpinning: v }),
       clearRecommendation: () => set({ currentRecommendation: null }),
+      clearHistory: () => set({ history: [] }),
 
       addToFavorite: (id) => set((s) => ({
         history: s.history.map(h => h.id === id ? { ...h, isFavorite: true } : h),
