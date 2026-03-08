@@ -137,6 +137,17 @@ export const useAppStore = create<AppState>()(
         history: s.history.map(h => h.id === id ? { ...h, userRating: rating } : h),
       })),
     }),
-    { name: 'babgorithm-storage' }
+    {
+      name: 'babgorithm-storage',
+      merge: (persisted, current) => {
+        const p = persisted as Partial<AppState> | undefined;
+        return {
+          ...current,
+          ...p,
+          todayRecommendedIds: p?.todayRecommendedIds ?? [],
+          allRecommendedToday: p?.allRecommendedToday ?? false,
+        };
+      },
+    }
   )
 );
