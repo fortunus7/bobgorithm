@@ -1,10 +1,10 @@
 import { useAppStore } from '@/store/useAppStore';
-import { Star, Clock } from 'lucide-react';
+import { Star, Clock, Heart } from 'lucide-react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
 const HistoryPage = () => {
-  const { history, rateRestaurant } = useAppStore();
+  const { history, rateRestaurant, addToFavorite, removeFromFavorite } = useAppStore();
 
   return (
     <div className="flex flex-col gap-4 pt-6 pb-4 px-6">
@@ -19,13 +19,26 @@ const HistoryPage = () => {
           {history.map((item) => (
             <div key={item.id} className="bg-card rounded-2xl p-4 category-shadow">
               <div className="flex justify-between items-start">
-                <div>
+                <div className="flex-1">
                   <h3 className="font-bold text-foreground">{item.restaurant.name}</h3>
                   <p className="text-sm text-muted-foreground">{item.restaurant.menu}</p>
                   <p className="text-xs text-muted-foreground mt-1">
                     {format(new Date(item.date), 'M월 d일 (EEE) HH:mm', { locale: ko })}
                   </p>
                 </div>
+                <button
+                  onClick={() => item.isFavorite ? removeFromFavorite(item.id) : addToFavorite(item.id)}
+                  className="p-1.5 rounded-full transition-colors"
+                >
+                  <Heart
+                    size={22}
+                    className={`transition-colors ${
+                      item.isFavorite
+                        ? 'fill-destructive text-destructive'
+                        : 'text-muted-foreground/40'
+                    }`}
+                  />
+                </button>
               </div>
               <div className="flex gap-1 mt-3">
                 {[1, 2, 3, 4, 5].map((star) => (
