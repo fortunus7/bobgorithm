@@ -31,12 +31,17 @@ export const useAppStore = create<AppState>()(
       history: [],
       currentRecommendation: null,
       isSpinning: false,
+      todayRecommendedIds: [],
+      allRecommendedToday: false,
 
       toggleCategory: (cat) => set((s) => ({
         categoryCounts: {
           ...s.categoryCounts,
           [cat]: s.categoryCounts[cat] + 1,
         },
+        // Reset today's recommendations when category changes
+        todayRecommendedIds: [],
+        allRecommendedToday: false,
       })),
 
       toggleTaste: (taste) => set((s) => ({
@@ -49,6 +54,8 @@ export const useAppStore = create<AppState>()(
       resetCounts: () => set({
         categoryCounts: { '한식': 0, '중식': 0, '일식/회': 0, '양식/기타': 0 },
         tasteCounts: { '매콤하게': 0, '느끼하지 않게': 0, '가볍게': 0, '든든하게': 0 },
+        todayRecommendedIds: [],
+        allRecommendedToday: false,
       }),
 
       recommend: () => {
