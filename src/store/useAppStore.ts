@@ -13,7 +13,8 @@ interface AppState {
 
   toggleCategory: (cat: FoodCategory) => void;
   toggleTaste: (taste: TastePreference) => void;
-  recommend: () => void;
+  recommend: () => boolean;
+  canRecommend: () => boolean;
   setSpinning: (v: boolean) => void;
   resetCounts: () => void;
   clearHistory: () => void;
