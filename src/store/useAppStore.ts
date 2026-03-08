@@ -14,6 +14,7 @@ interface AppState {
   recommend: () => void;
   setSpinning: (v: boolean) => void;
   resetCounts: () => void;
+  clearHistory: () => void;
   clearRecommendation: () => void;
   addToFavorite: (id: string) => void;
   removeFromFavorite: (id: string) => void;
@@ -97,6 +98,7 @@ export const useAppStore = create<AppState>()(
 
       setSpinning: (v) => set({ isSpinning: v }),
       clearRecommendation: () => set({ currentRecommendation: null }),
+      clearHistory: () => set({ history: [] }),
 
       addToFavorite: (id) => set((s) => ({
         history: s.history.map(h => h.id === id ? { ...h, isFavorite: true } : h),

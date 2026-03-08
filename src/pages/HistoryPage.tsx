@@ -1,14 +1,41 @@
 import { useAppStore } from '@/store/useAppStore';
-import { Star, Clock, Heart } from 'lucide-react';
+import { Star, Clock, Heart, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 const HistoryPage = () => {
-  const { history, rateRestaurant, addToFavorite, removeFromFavorite } = useAppStore();
+  const { history, rateRestaurant, addToFavorite, removeFromFavorite, clearHistory } = useAppStore();
+  const displayedHistory = history.slice(0, 30);
 
   return (
     <div className="flex flex-col gap-4 pt-6 pb-4 px-6">
-      <h1 className="text-2xl font-bold text-foreground">추천 이력</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-foreground">추천 이력</h1>
+        {history.length > 0 && (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button className="flex items-center gap-1 text-sm text-destructive hover:opacity-70 transition-opacity">
+                <Trash2 size={16} />
+                초기화
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>기록 초기화</AlertDialogTitle>
+                <AlertDialogDescription>모든 추천 이력이 삭제됩니다. 계속하시겠습니까?</AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>취소</AlertDialogCancel>
+                <AlertDialogAction onClick={clearHistory}>초기화</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
+      </div>
       {history.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
           <Clock size={48} className="mb-3 opacity-30" />
@@ -16,7 +43,7 @@ const HistoryPage = () => {
         </div>
       ) : (
         <div className="space-y-3">
-          {history.map((item) => (
+          {displayedHistory.map((item) => (
             <div key={item.id} className="bg-card rounded-2xl p-4 category-shadow">
               <div className="flex justify-between items-start">
                 <div className="flex-1">
