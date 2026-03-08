@@ -2,6 +2,7 @@ import { useAppStore } from '@/store/useAppStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Star, Phone, MapPin, Navigation, Heart, Share2 } from 'lucide-react';
 import { toast } from 'sonner';
+import babiCharacter from '@/assets/babi-character.png';
 
 const RecommendationResult = () => {
   const { currentRecommendation, clearRecommendation, history, addToFavorite, removeFromFavorite } = useAppStore();
@@ -17,17 +18,28 @@ const RecommendationResult = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-foreground/30 backdrop-blur-sm z-50 flex items-end justify-center"
+        className="fixed inset-0 bg-foreground/30 backdrop-blur-sm z-50 flex items-center justify-center px-4"
         onClick={clearRecommendation}
       >
         <motion.div
-          initial={{ y: 400 }}
-          animate={{ y: 0 }}
-          exit={{ y: 400 }}
-          transition={{ type: 'spring', damping: 25 }}
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.8, opacity: 0 }}
+          transition={{ type: 'spring', damping: 22 }}
           onClick={(e) => e.stopPropagation()}
-          className="w-full max-w-md bg-card rounded-t-3xl p-6 pb-10"
+          className="w-full max-w-md bg-card rounded-3xl p-6 relative pt-16"
         >
+          {/* 바비 캐릭터 */}
+          <motion.div
+            initial={{ y: -20 }}
+            animate={{ y: 0 }}
+            transition={{ type: 'spring', damping: 12, delay: 0.1 }}
+            className="absolute -top-14 left-1/2 -translate-x-1/2"
+          >
+            <div className="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center">
+              <img src={babiCharacter} alt="바비" className="w-20 h-20 object-contain" />
+            </div>
+          </motion.div>
           <div className="flex justify-between items-start mb-4">
             <div>
               <h2 className="text-xl font-bold text-foreground">{currentRecommendation.name}</h2>
