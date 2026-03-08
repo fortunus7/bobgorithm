@@ -23,7 +23,7 @@ const BabiButton = () => {
   };
 
   return (
-    <div className="flex justify-center py-4">
+    <div className="flex flex-col items-center py-4 gap-4">
       <motion.button
         animate={controls}
         whileHover={{ scale: 1.05 }}
@@ -48,6 +48,10 @@ const BabiButton = () => {
           </motion.span>
         )}
       </motion.button>
+      <div className="text-center">
+        <p className="text-xl font-black text-foreground">오늘 뭐 먹지?</p>
+        <p className="text-sm text-muted-foreground mt-1">손님들의 취향을 선택하고 '바비'를 눌러주세요</p>
+      </div>
     </div>
   );
 };
