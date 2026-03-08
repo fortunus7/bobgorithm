@@ -13,7 +13,29 @@ const HistoryPage = () => {
 
   return (
     <div className="flex flex-col gap-4 pt-6 pb-4 px-6">
-      <h1 className="text-2xl font-bold text-foreground">추천 이력</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-foreground">추천 이력</h1>
+        {history.length > 0 && (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button className="flex items-center gap-1 text-sm text-destructive hover:opacity-70 transition-opacity">
+                <Trash2 size={16} />
+                초기화
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>기록 초기화</AlertDialogTitle>
+                <AlertDialogDescription>모든 추천 이력이 삭제됩니다. 계속하시겠습니까?</AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>취소</AlertDialogCancel>
+                <AlertDialogAction onClick={clearHistory}>초기화</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
+      </div>
       {history.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
           <Clock size={48} className="mb-3 opacity-30" />
