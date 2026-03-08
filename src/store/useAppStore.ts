@@ -10,6 +10,7 @@ interface AppState {
   isSpinning: boolean;
   todayRecommendedIds: string[];
   allRecommendedToday: boolean;
+  lastRecommendedDate: string | null;
 
   toggleCategory: (cat: FoodCategory) => void;
   toggleTaste: (taste: TastePreference) => void;
