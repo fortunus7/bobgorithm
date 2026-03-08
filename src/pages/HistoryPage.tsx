@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
 const HistoryPage = () => {
-  const { history, rateRestaurant } = useAppStore();
+  const { history, rateRestaurant, addToFavorite, removeFromFavorite } = useAppStore();
 
   return (
     <div className="flex flex-col gap-4 pt-6 pb-4 px-6">
