@@ -48,6 +48,7 @@ export const useAppStore = create<AppState>()(
         tasteCounts: { '매콤하게': 0, '느끼하지 않게': 0, '가볍게': 0, '든든하게': 0 },
       }),
 
+      recommend: () => {
         const { categoryCounts, tasteCounts, history } = get();
         const totalCatClicks = (Object.values(categoryCounts) as number[]).reduce((a, b) => a + b, 0);
         const totalTasteClicks = (Object.values(tasteCounts) as number[]).reduce((a, b) => a + b, 0);
