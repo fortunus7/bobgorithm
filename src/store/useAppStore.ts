@@ -14,6 +14,7 @@ interface AppState {
   recommend: () => void;
   setSpinning: (v: boolean) => void;
   resetCounts: () => void;
+  clearHistory: () => void;
   clearRecommendation: () => void;
   addToFavorite: (id: string) => void;
   removeFromFavorite: (id: string) => void;
