@@ -62,9 +62,14 @@ export const useAppStore = create<AppState>()(
       }),
 
       canRecommend: () => {
-        const { history, todayRecommendedIds } = get();
+        const today = new Date().toDateString();
+        const { history, todayRecommendedIds, lastRecommendedDate } = get();
+        
+        // Reset if it's a new day
+        const effectiveIds = lastRecommendedDate === today ? todayRecommendedIds : [];
+        
         const excludedIds = history.filter(h => h.userRating !== undefined && h.userRating <= 2).map(h => h.restaurant.id);
-        const candidates = MOCK_RESTAURANTS.filter(r => !excludedIds.includes(r.id) && !todayRecommendedIds.includes(r.id));
+        const candidates = MOCK_RESTAURANTS.filter(r => !excludedIds.includes(r.id) && !effectiveIds.includes(r.id));
         return candidates.length > 0;
       },
 
