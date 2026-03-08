@@ -50,7 +50,7 @@ const BabiButton = () => {
       </motion.button>
       <div className="text-center">
         <p className="text-xl font-black text-foreground">오늘 뭐 먹지?</p>
-        <p className="text-sm text-muted-foreground mt-1">손님들의 취향을 선택하고 '바비'를 눌러주세요</p>
+        <p className="text-sm text-muted-foreground mt-1">손님들의 취향을 투표하고 '바비'를 눌러주세요</p>
       </div>
     </div>
   );
