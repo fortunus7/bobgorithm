@@ -8,6 +8,8 @@ interface AppState {
   history: RecommendationHistory[];
   currentRecommendation: Restaurant | null;
   isSpinning: boolean;
+  todayRecommendedIds: string[];
+  allRecommendedToday: boolean;
 
   toggleCategory: (cat: FoodCategory) => void;
   toggleTaste: (taste: TastePreference) => void;
