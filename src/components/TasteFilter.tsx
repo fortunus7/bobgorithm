@@ -27,8 +27,8 @@ const TasteFilter = () => {
                 {count}
               </motion.span>
             )}
-            <span className="text-lg">{TASTE_EMOJIS[taste]}</span>
-            <span className="text-sm font-semibold text-foreground">{taste}</span>
+            <span className="text-xl">{TASTE_EMOJIS[taste]}</span>
+            <span className="text-base font-bold text-foreground">{taste}</span>
           </motion.button>
         );
       })}

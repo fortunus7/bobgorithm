@@ -27,8 +27,8 @@ const CategoryFilter = () => {
                 {count}
               </motion.span>
             )}
-            <span className="text-2xl">{CATEGORY_EMOJIS[cat]}</span>
-            <span className="text-xs font-semibold text-foreground">{cat}</span>
+            <span className="text-3xl">{CATEGORY_EMOJIS[cat]}</span>
+            <span className="text-sm font-bold text-foreground">{cat}</span>
           </motion.button>
         );
       })}
