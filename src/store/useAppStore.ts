@@ -13,6 +13,7 @@ interface AppState {
   toggleTaste: (taste: TastePreference) => void;
   recommend: () => void;
   setSpinning: (v: boolean) => void;
+  resetCounts: () => void;
   clearRecommendation: () => void;
   addToFavorite: (id: string) => void;
   removeFromFavorite: (id: string) => void;
