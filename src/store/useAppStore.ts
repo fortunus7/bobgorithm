@@ -124,6 +124,8 @@ export const useAppStore = create<AppState>()(
           todayRecommendedIds: [...s.todayRecommendedIds, selected.id],
           allRecommendedToday: false,
         }));
+
+        return true;
       },
 
       setSpinning: (v) => set({ isSpinning: v }),
