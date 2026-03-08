@@ -1,16 +1,24 @@
 import { useAppStore } from '@/store/useAppStore';
 import { motion, useAnimation } from 'framer-motion';
+import { toast } from 'sonner';
 import babiImg from '@/assets/babi-character.png';
 
 const BabiButton = () => {
-  const { isSpinning, setSpinning, recommend } = useAppStore();
+  const { isSpinning, setSpinning, recommend, allRecommendedToday } = useAppStore();
   const controls = useAnimation();
 
   const handleClick = async () => {
     if (isSpinning) return;
+
+    if (allRecommendedToday) {
+      toast('🎉 오늘의 추천 완료!', {
+        description: '모든 메뉴를 다 추천해 드렸어요. 카테고리를 변경하거나 내일 다시 이용해 주세요!',
+      });
+      return;
+    }
+
     setSpinning(true);
 
-    // Bounce and spin animation
     await controls.start({
       rotate: [0, 15, -15, 360, 720, 1080],
       y: [0, -30, 0, -20, 0, -10, 0],
@@ -44,13 +52,19 @@ const BabiButton = () => {
             transition={{ repeat: Infinity, duration: 2 }}
             className="absolute -top-2 text-xs font-medium text-muted-foreground"
           >
-            눌러서 추천받기!
+            {allRecommendedToday ? '오늘의 추천 완료!' : '눌러서 추천받기!'}
           </motion.span>
         )}
       </motion.button>
       <div className="text-center">
-        <p className="text-xl font-black text-foreground">오늘 뭐 먹지?</p>
-        <p className="text-sm text-muted-foreground mt-1">손님들의 취향을 투표하고 '바비'를 눌러주세요</p>
+        <p className="text-xl font-black text-foreground">
+          {allRecommendedToday ? '🎉 모든 메뉴를 추천했어요!' : '오늘 뭐 먹지?'}
+        </p>
+        <p className="text-sm text-muted-foreground mt-1">
+          {allRecommendedToday
+            ? '카테고리를 변경하면 다시 추천받을 수 있어요'
+            : "손님들의 취향을 투표하고 '바비'를 눌러주세요"}
+        </p>
       </div>
     </div>
   );
