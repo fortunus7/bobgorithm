@@ -4,13 +4,13 @@ import { toast } from 'sonner';
 import babiImg from '@/assets/babi-character.png';
 
 const BabiButton = () => {
-  const { isSpinning, setSpinning, recommend, allRecommendedToday } = useAppStore();
+  const { isSpinning, setSpinning, recommend, allRecommendedToday, canRecommend } = useAppStore();
   const controls = useAnimation();
 
   const handleClick = async () => {
     if (isSpinning) return;
 
-    if (allRecommendedToday) {
+    if (allRecommendedToday || !canRecommend()) {
       toast('🎉 오늘의 추천 완료!', {
         description: '모든 메뉴를 다 추천해 드렸어요. 카테고리를 변경하거나 내일 다시 이용해 주세요!',
       });
@@ -26,8 +26,14 @@ const BabiButton = () => {
       transition: { duration: 1.8, ease: 'easeInOut' },
     });
 
-    recommend();
+    const success = recommend();
     setSpinning(false);
+
+    if (!success) {
+      toast('🎉 오늘의 추천 완료!', {
+        description: '모든 메뉴를 다 추천해 드렸어요.',
+      });
+    }
   };
 
   return (
