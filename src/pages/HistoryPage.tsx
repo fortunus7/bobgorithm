@@ -1,10 +1,15 @@
 import { useAppStore } from '@/store/useAppStore';
-import { Star, Clock, Heart } from 'lucide-react';
+import { Star, Clock, Heart, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 const HistoryPage = () => {
-  const { history, rateRestaurant, addToFavorite, removeFromFavorite } = useAppStore();
+  const { history, rateRestaurant, addToFavorite, removeFromFavorite, clearHistory } = useAppStore();
+  const displayedHistory = history.slice(0, 30);
 
   return (
     <div className="flex flex-col gap-4 pt-6 pb-4 px-6">
