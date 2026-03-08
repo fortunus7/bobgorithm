@@ -40,7 +40,7 @@ const RecommendationResult = () => {
               <img src={babiCharacter} alt="바비" className="w-60 h-60 object-contain" />
             </div>
           </motion.div>
-          <p className="text-center text-2xl font-bold text-primary -mt-2 mb-4">제가 골라 드렸어요 🍽️</p>
+          <p className="text-center text-2xl font-bold text-primary -mt-6 mb-4">제가 골라 드렸어요 🍽️</p>
           <div className="flex justify-between items-start mb-4">
             <div>
               <h2 className="text-xl font-bold text-foreground">{currentRecommendation.name}</h2>
