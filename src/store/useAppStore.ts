@@ -164,11 +164,14 @@ export const useAppStore = create<AppState>()(
       name: 'babgorithm-storage',
       merge: (persisted, current) => {
         const p = persisted as Partial<AppState> | undefined;
+        const today = new Date().toDateString();
+        const isNewDay = p?.lastRecommendedDate !== today;
         return {
           ...current,
           ...p,
-          todayRecommendedIds: p?.todayRecommendedIds ?? [],
-          allRecommendedToday: p?.allRecommendedToday ?? false,
+          todayRecommendedIds: isNewDay ? [] : (p?.todayRecommendedIds ?? []),
+          allRecommendedToday: isNewDay ? false : (p?.allRecommendedToday ?? false),
+          lastRecommendedDate: p?.lastRecommendedDate ?? null,
         };
       },
     }
