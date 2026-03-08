@@ -10,6 +10,7 @@ interface AppState {
   isSpinning: boolean;
   todayRecommendedIds: string[];
   allRecommendedToday: boolean;
+  lastRecommendedDate: string | null;
 
   toggleCategory: (cat: FoodCategory) => void;
   toggleTaste: (taste: TastePreference) => void;
@@ -34,6 +35,7 @@ export const useAppStore = create<AppState>()(
       isSpinning: false,
       todayRecommendedIds: [],
       allRecommendedToday: false,
+      lastRecommendedDate: null,
 
       toggleCategory: (cat) => set((s) => ({
         categoryCounts: {
@@ -60,21 +62,34 @@ export const useAppStore = create<AppState>()(
       }),
 
       canRecommend: () => {
-        const { history, todayRecommendedIds } = get();
+        const today = new Date().toDateString();
+        const { history, todayRecommendedIds, lastRecommendedDate } = get();
+        
+        // Reset if it's a new day
+        const effectiveIds = lastRecommendedDate === today ? todayRecommendedIds : [];
+        
         const excludedIds = history.filter(h => h.userRating !== undefined && h.userRating <= 2).map(h => h.restaurant.id);
-        const candidates = MOCK_RESTAURANTS.filter(r => !excludedIds.includes(r.id) && !todayRecommendedIds.includes(r.id));
+        const candidates = MOCK_RESTAURANTS.filter(r => !excludedIds.includes(r.id) && !effectiveIds.includes(r.id));
         return candidates.length > 0;
       },
 
       recommend: (): boolean => {
-        const { categoryCounts, tasteCounts, history, todayRecommendedIds, currentRecommendation } = get();
+        const today = new Date().toDateString();
+        const { categoryCounts, tasteCounts, history, todayRecommendedIds, currentRecommendation, lastRecommendedDate } = get();
+        
+        // Reset daily tracking if it's a new day
+        const effectiveIds = lastRecommendedDate === today ? todayRecommendedIds : [];
+        if (lastRecommendedDate !== today) {
+          set({ todayRecommendedIds: [], allRecommendedToday: false, lastRecommendedDate: today });
+        }
+        
         const totalCatClicks = (Object.values(categoryCounts) as number[]).reduce((a, b) => a + b, 0);
         const totalTasteClicks = (Object.values(tasteCounts) as number[]).reduce((a, b) => a + b, 0);
 
         const excludedIds = history.filter(h => h.userRating !== undefined && h.userRating <= 2).map(h => h.restaurant.id);
         let candidates = MOCK_RESTAURANTS.filter(r => !excludedIds.includes(r.id));
 
-        candidates = candidates.filter(r => !todayRecommendedIds.includes(r.id));
+        candidates = candidates.filter(r => !effectiveIds.includes(r.id));
 
         if (candidates.length === 0) {
           set({ allRecommendedToday: true });
@@ -121,7 +136,8 @@ export const useAppStore = create<AppState>()(
         set((s) => ({
           currentRecommendation: selected,
           history: [historyEntry, ...s.history],
-          todayRecommendedIds: [...s.todayRecommendedIds, selected.id],
+          todayRecommendedIds: [...effectiveIds, selected.id],
+          lastRecommendedDate: today,
           allRecommendedToday: false,
         }));
 
@@ -148,11 +164,14 @@ export const useAppStore = create<AppState>()(
       name: 'babgorithm-storage',
       merge: (persisted, current) => {
         const p = persisted as Partial<AppState> | undefined;
+        const today = new Date().toDateString();
+        const isNewDay = p?.lastRecommendedDate !== today;
         return {
           ...current,
           ...p,
-          todayRecommendedIds: p?.todayRecommendedIds ?? [],
-          allRecommendedToday: p?.allRecommendedToday ?? false,
+          todayRecommendedIds: isNewDay ? [] : (p?.todayRecommendedIds ?? []),
+          allRecommendedToday: isNewDay ? false : (p?.allRecommendedToday ?? false),
+          lastRecommendedDate: p?.lastRecommendedDate ?? null,
         };
       },
     }
