@@ -35,7 +35,7 @@ const BabiButton = () => {
         <img
           src={babiImg}
           alt="바비 캐릭터"
-          className="w-[180%] h-[180%] object-contain drop-shadow-md"
+          className="w-[234%] h-[234%] object-contain drop-shadow-md"
         />
         {!isSpinning && (
           <motion.span
