@@ -35,6 +35,7 @@ export const useAppStore = create<AppState>()(
       isSpinning: false,
       todayRecommendedIds: [],
       allRecommendedToday: false,
+      lastRecommendedDate: null,
 
       toggleCategory: (cat) => set((s) => ({
         categoryCounts: {
