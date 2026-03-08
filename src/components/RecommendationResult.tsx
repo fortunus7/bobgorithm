@@ -90,7 +90,7 @@ const RecommendationResult = () => {
             </button>
             <button
               onClick={async () => {
-                const shareText = `오늘 점심은 ${currentRecommendation.menu}! '밥고리즘' 앱에서 골라줍니다`;
+                const shareText = `오늘 점심은 ${currentRecommendation.menu}!\n'밥고리즘' 앱에서 골라줍니다\n고민 하지 마세요\nbobgorithm.lovable.app`;
                 if (navigator.share) {
                   try {
                     await navigator.share({ text: shareText });
