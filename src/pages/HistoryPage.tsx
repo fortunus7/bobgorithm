@@ -1,5 +1,5 @@
 import { useAppStore } from '@/store/useAppStore';
-import { Star, Clock } from 'lucide-react';
+import { Star, Clock, Heart } from 'lucide-react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
