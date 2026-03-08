@@ -1,6 +1,7 @@
 import { useAppStore } from '@/store/useAppStore';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Star, Phone, MapPin, Navigation, Heart } from 'lucide-react';
+import { X, Star, Phone, MapPin, Navigation, Heart, Share2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 const RecommendationResult = () => {
   const { currentRecommendation, clearRecommendation, history, addToFavorite, removeFromFavorite } = useAppStore();
