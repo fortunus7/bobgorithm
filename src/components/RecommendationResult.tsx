@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { useAppStore } from '@/store/useAppStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Star, Phone, MapPin, Navigation, Heart, Share2 } from 'lucide-react';
 import { toast } from 'sonner';
 import babiCharacter from '@/assets/babi-character.png';
+import MapDialog from './MapDialog';
 
 const RecommendationResult = () => {
   const { currentRecommendation, clearRecommendation, history, addToFavorite, removeFromFavorite } = useAppStore();
+  const [mapOpen, setMapOpen] = useState(false);
   
   if (!currentRecommendation) return null;
 
