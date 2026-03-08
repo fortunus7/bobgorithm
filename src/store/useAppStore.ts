@@ -13,7 +13,8 @@ interface AppState {
 
   toggleCategory: (cat: FoodCategory) => void;
   toggleTaste: (taste: TastePreference) => void;
-  recommend: () => void;
+  recommend: () => boolean;
+  canRecommend: () => boolean;
   setSpinning: (v: boolean) => void;
   resetCounts: () => void;
   clearHistory: () => void;
@@ -58,22 +59,26 @@ export const useAppStore = create<AppState>()(
         allRecommendedToday: false,
       }),
 
-      recommend: () => {
+      canRecommend: () => {
+        const { history, todayRecommendedIds } = get();
+        const excludedIds = history.filter(h => h.userRating !== undefined && h.userRating <= 2).map(h => h.restaurant.id);
+        const candidates = MOCK_RESTAURANTS.filter(r => !excludedIds.includes(r.id) && !todayRecommendedIds.includes(r.id));
+        return candidates.length > 0;
+      },
+
+      recommend: (): boolean => {
         const { categoryCounts, tasteCounts, history, todayRecommendedIds, currentRecommendation } = get();
         const totalCatClicks = (Object.values(categoryCounts) as number[]).reduce((a, b) => a + b, 0);
         const totalTasteClicks = (Object.values(tasteCounts) as number[]).reduce((a, b) => a + b, 0);
 
-        // Filter out restaurants rated poorly (<=2)
         const excludedIds = history.filter(h => h.userRating !== undefined && h.userRating <= 2).map(h => h.restaurant.id);
         let candidates = MOCK_RESTAURANTS.filter(r => !excludedIds.includes(r.id));
 
-        // Exclude today's already recommended menus
         candidates = candidates.filter(r => !todayRecommendedIds.includes(r.id));
 
-        // All menus exhausted
         if (candidates.length === 0) {
           set({ allRecommendedToday: true });
-          return;
+          return false;
         }
 
         // Exclude the last recommended to prevent consecutive duplicates
@@ -119,6 +124,8 @@ export const useAppStore = create<AppState>()(
           todayRecommendedIds: [...s.todayRecommendedIds, selected.id],
           allRecommendedToday: false,
         }));
+
+        return true;
       },
 
       setSpinning: (v) => set({ isSpinning: v }),
