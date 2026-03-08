@@ -44,8 +44,8 @@ export const useAppStore = create<AppState>()(
 
       recommend: () => {
         const { categoryCounts, tasteCounts, history } = get();
-        const totalCatClicks = Object.values(categoryCounts).reduce((a, b) => a + b, 0);
-        const totalTasteClicks = Object.values(tasteCounts).reduce((a, b) => a + b, 0);
+        const totalCatClicks = (Object.values(categoryCounts) as number[]).reduce((a, b) => a + b, 0);
+        const totalTasteClicks = (Object.values(tasteCounts) as number[]).reduce((a, b) => a + b, 0);
 
         // Filter out restaurants rated poorly (<=2)
         const excludedIds = history.filter(h => h.userRating !== undefined && h.userRating <= 2).map(h => h.restaurant.id);
