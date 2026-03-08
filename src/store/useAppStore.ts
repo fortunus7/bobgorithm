@@ -74,14 +74,22 @@ export const useAppStore = create<AppState>()(
       },
 
       recommend: (): boolean => {
-        const { categoryCounts, tasteCounts, history, todayRecommendedIds, currentRecommendation } = get();
+        const today = new Date().toDateString();
+        const { categoryCounts, tasteCounts, history, todayRecommendedIds, currentRecommendation, lastRecommendedDate } = get();
+        
+        // Reset daily tracking if it's a new day
+        const effectiveIds = lastRecommendedDate === today ? todayRecommendedIds : [];
+        if (lastRecommendedDate !== today) {
+          set({ todayRecommendedIds: [], allRecommendedToday: false, lastRecommendedDate: today });
+        }
+        
         const totalCatClicks = (Object.values(categoryCounts) as number[]).reduce((a, b) => a + b, 0);
         const totalTasteClicks = (Object.values(tasteCounts) as number[]).reduce((a, b) => a + b, 0);
 
         const excludedIds = history.filter(h => h.userRating !== undefined && h.userRating <= 2).map(h => h.restaurant.id);
         let candidates = MOCK_RESTAURANTS.filter(r => !excludedIds.includes(r.id));
 
-        candidates = candidates.filter(r => !todayRecommendedIds.includes(r.id));
+        candidates = candidates.filter(r => !effectiveIds.includes(r.id));
 
         if (candidates.length === 0) {
           set({ allRecommendedToday: true });
@@ -128,7 +136,8 @@ export const useAppStore = create<AppState>()(
         set((s) => ({
           currentRecommendation: selected,
           history: [historyEntry, ...s.history],
-          todayRecommendedIds: [...s.todayRecommendedIds, selected.id],
+          todayRecommendedIds: [...effectiveIds, selected.id],
+          lastRecommendedDate: today,
           allRecommendedToday: false,
         }));
 
