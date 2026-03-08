@@ -30,12 +30,12 @@ const BabiButton = () => {
         whileTap={{ scale: 0.95 }}
         onClick={handleClick}
         disabled={isSpinning}
-        className="relative w-48 h-48 rounded-[2.5rem] bg-peach flex items-center justify-center babi-shadow cursor-pointer border-0 outline-none"
+        className="relative w-56 h-56 rounded-[2.5rem] bg-peach flex items-center justify-center babi-shadow cursor-pointer border-0 outline-none overflow-visible"
       >
         <img
           src={babiImg}
           alt="바비 캐릭터"
-          className="w-[80%] h-[80%] object-contain drop-shadow-md"
+          className="w-[140%] h-[140%] object-contain drop-shadow-md"
         />
         {!isSpinning && (
           <motion.span
