@@ -1,6 +1,7 @@
 import { useAppStore } from '@/store/useAppStore';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Star, Phone, MapPin, Navigation, Heart } from 'lucide-react';
+import { X, Star, Phone, MapPin, Navigation, Heart, Share2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 const RecommendationResult = () => {
   const { currentRecommendation, clearRecommendation, history, addToFavorite, removeFromFavorite } = useAppStore();
@@ -70,6 +71,27 @@ const RecommendationResult = () => {
             >
               <Heart size={18} className={isFav ? 'fill-accent text-accent' : ''} />
               즐겨찾기
+            </button>
+            <button
+              onClick={async () => {
+                const shareText = `오늘 점심은 ${currentRecommendation.menu}! '밥고리즘' 앱에서 골라줍니다`;
+                if (navigator.share) {
+                  try {
+                    await navigator.share({ text: shareText });
+                  } catch (e) {
+                    if ((e as Error).name !== 'AbortError') {
+                      toast.error('공유에 실패했습니다');
+                    }
+                  }
+                } else {
+                  await navigator.clipboard.writeText(shareText);
+                  toast.success('클립보드에 복사되었습니다');
+                }
+              }}
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-muted text-muted-foreground font-semibold"
+            >
+              <Share2 size={18} />
+              공유
             </button>
             <button className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-primary text-primary-foreground font-semibold">
               <Navigation size={18} />
