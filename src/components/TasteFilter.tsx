@@ -1,4 +1,5 @@
-import { TastePreference, TASTE_EMOJIS } from '@/types/app';
+import { TastePreference } from '@/types/app';
+import { TASTE_EMOJIS } from '@/lib/constants';
 import { useAppStore } from '@/store/useAppStore';
 import { motion } from 'framer-motion';
 

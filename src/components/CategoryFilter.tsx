@@ -1,4 +1,5 @@
-import { FoodCategory, CATEGORY_EMOJIS } from '@/types/app';
+import { FoodCategory } from '@/types/app';
+import { CATEGORY_EMOJIS } from '@/lib/constants';
 import { useAppStore } from '@/store/useAppStore';
 import { motion } from 'framer-motion';
 

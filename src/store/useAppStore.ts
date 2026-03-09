@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { FoodCategory, TastePreference, Restaurant, RecommendationHistory, MOCK_RESTAURANTS } from '@/types/app';
+import { FoodCategory, TastePreference, Restaurant, RecommendationHistory } from '@/types/app';
+import { getRecommendation, hasAvailableRecommendations } from '@/lib/recommendation';
 
 interface AppState {
   categoryCounts: Record<FoodCategory, number>;
@@ -64,66 +65,33 @@ export const useAppStore = create<AppState>()(
       canRecommend: () => {
         const today = new Date().toDateString();
         const { history, todayRecommendedIds, lastRecommendedDate } = get();
-        
+
         // Reset if it's a new day
         const effectiveIds = lastRecommendedDate === today ? todayRecommendedIds : [];
-        
-        const excludedIds = history.filter(h => h.userRating !== undefined && h.userRating <= 2).map(h => h.restaurant.id);
-        const candidates = MOCK_RESTAURANTS.filter(r => !excludedIds.includes(r.id) && !effectiveIds.includes(r.id));
-        return candidates.length > 0;
+        return hasAvailableRecommendations(history, effectiveIds);
       },
 
       recommend: (): boolean => {
         const today = new Date().toDateString();
         const { categoryCounts, tasteCounts, history, todayRecommendedIds, currentRecommendation, lastRecommendedDate } = get();
-        
+
         // Reset daily tracking if it's a new day
         const effectiveIds = lastRecommendedDate === today ? todayRecommendedIds : [];
         if (lastRecommendedDate !== today) {
           set({ todayRecommendedIds: [], allRecommendedToday: false, lastRecommendedDate: today });
         }
-        
-        const totalCatClicks = (Object.values(categoryCounts) as number[]).reduce((a, b) => a + b, 0);
-        const totalTasteClicks = (Object.values(tasteCounts) as number[]).reduce((a, b) => a + b, 0);
 
-        const excludedIds = history.filter(h => h.userRating !== undefined && h.userRating <= 2).map(h => h.restaurant.id);
-        let candidates = MOCK_RESTAURANTS.filter(r => !excludedIds.includes(r.id));
-
-        candidates = candidates.filter(r => !effectiveIds.includes(r.id));
-
-        if (candidates.length === 0) {
-          set({ allRecommendedToday: true });
-          return false;
-        }
-
-        // Exclude the last recommended to prevent consecutive duplicates
-        if (currentRecommendation && candidates.length > 1) {
-          candidates = candidates.filter(r => r.id !== currentRecommendation.id);
-        }
-
-        // Weight by category and taste preferences
-        const weighted = candidates.map(r => {
-          let weight = 1;
-          if (totalCatClicks > 0) {
-            weight += (categoryCounts[r.category] || 0) * 2;
-          }
-          if (totalTasteClicks > 0) {
-            r.taste.forEach(t => {
-              weight += (tasteCounts[t] || 0);
-            });
-          }
-          return { restaurant: r, weight };
+        const selected = getRecommendation({
+          categoryCounts,
+          tasteCounts,
+          history,
+          todayRecommendedIds: effectiveIds,
+          currentRecommendation
         });
 
-        const totalWeight = weighted.reduce((a, b) => a + b.weight, 0);
-        let random = Math.random() * totalWeight;
-        let selected = weighted[0].restaurant;
-        for (const w of weighted) {
-          random -= w.weight;
-          if (random <= 0) {
-            selected = w.restaurant;
-            break;
-          }
+        if (!selected) {
+          set({ allRecommendedToday: true });
+          return false;
         }
 
         const historyEntry: RecommendationHistory = {

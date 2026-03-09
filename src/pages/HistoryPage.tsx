@@ -13,7 +13,7 @@ const HistoryPage = () => {
 
   return (
     <div className="flex flex-col gap-4 pt-6 pb-4 px-6">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-1">
         <h1 className="text-2xl font-bold text-foreground">추천 이력</h1>
         {history.length > 0 && (
           <AlertDialog>
@@ -36,6 +36,9 @@ const HistoryPage = () => {
           </AlertDialog>
         )}
       </div>
+      <p className="text-sm text-muted-foreground mb-2">
+        자체 평가를 해주세요. 평가에 따라서 추천 확률에 반영 됩니다. 별 1개: 추천 제외
+      </p>
       {history.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
           <Clock size={48} className="mb-3 opacity-30" />
@@ -59,11 +62,10 @@ const HistoryPage = () => {
                 >
                   <Heart
                     size={22}
-                    className={`transition-colors ${
-                      item.isFavorite
+                    className={`transition-colors ${item.isFavorite
                         ? 'fill-destructive text-destructive'
                         : 'text-muted-foreground/40'
-                    }`}
+                      }`}
                   />
                 </button>
               </div>
@@ -76,16 +78,18 @@ const HistoryPage = () => {
                   >
                     <Star
                       size={20}
-                      className={`transition-colors ${
-                        (item.userRating || 0) >= star
+                      className={`transition-colors ${(item.userRating || 0) >= star
                           ? 'fill-accent text-accent'
                           : 'text-muted-foreground/30'
-                      }`}
+                        }`}
                     />
                   </button>
                 ))}
-                {item.userRating && item.userRating <= 2 && (
+                {item.userRating === 1 && (
                   <span className="ml-2 text-xs text-destructive font-medium self-center">추천 제외</span>
+                )}
+                {item.userRating === 5 && (
+                  <span className="ml-2 text-xs text-primary font-medium self-center">추천 확률 UP!</span>
                 )}
               </div>
             </div>
