@@ -12,6 +12,7 @@ interface AppState {
   todayRecommendedIds: string[];
   allRecommendedToday: boolean;
   lastRecommendedDate: string | null;
+  theme: 'light' | 'dark' | 'system';
 
   toggleCategory: (cat: FoodCategory) => void;
   toggleTaste: (taste: TastePreference) => void;
@@ -24,6 +25,7 @@ interface AppState {
   addToFavorite: (id: string) => void;
   removeFromFavorite: (id: string) => void;
   rateRestaurant: (id: string, rating: number) => void;
+  setTheme: (theme: 'light' | 'dark' | 'system') => void;
 }
 
 export const useAppStore = create<AppState>()(
@@ -37,6 +39,7 @@ export const useAppStore = create<AppState>()(
       todayRecommendedIds: [],
       allRecommendedToday: false,
       lastRecommendedDate: null,
+      theme: 'system',
 
       toggleCategory: (cat) => set((s) => ({
         categoryCounts: {
@@ -127,6 +130,7 @@ export const useAppStore = create<AppState>()(
       rateRestaurant: (id, rating) => set((s) => ({
         history: s.history.map(h => h.id === id ? { ...h, userRating: rating } : h),
       })),
+      setTheme: (theme) => set({ theme }),
     }),
     {
       name: 'babgorithm-storage',
@@ -140,6 +144,7 @@ export const useAppStore = create<AppState>()(
           todayRecommendedIds: isNewDay ? [] : (p?.todayRecommendedIds ?? []),
           allRecommendedToday: isNewDay ? false : (p?.allRecommendedToday ?? false),
           lastRecommendedDate: p?.lastRecommendedDate ?? null,
+          theme: p?.theme ?? 'system',
         };
       },
     }

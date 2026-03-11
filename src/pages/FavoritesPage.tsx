@@ -20,7 +20,7 @@ const FavoritesPage = () => {
             <motion.div
               key={item.id}
               layout
-              className="bg-card rounded-2xl p-4 category-shadow"
+              className="bg-card dark:bg-slate-800 rounded-2xl p-4 category-shadow dark:shadow-none"
             >
               <div className="flex justify-between items-start">
                 <div>
@@ -35,7 +35,7 @@ const FavoritesPage = () => {
                 </div>
                 <button
                   onClick={() => removeFromFavorite(item.id)}
-                  className="p-2 rounded-xl bg-secondary"
+                  className="p-2 rounded-xl bg-secondary dark:bg-slate-700"
                 >
                   <Heart size={18} className="fill-accent text-accent" />
                 </button>

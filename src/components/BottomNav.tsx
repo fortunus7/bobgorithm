@@ -12,7 +12,7 @@ const BottomNav = () => {
   const location = useLocation();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-nav nav-shadow z-50">
+    <nav className="fixed bottom-0 left-0 right-0 bg-nav dark:bg-slate-900 nav-shadow dark:shadow-none dark:border-t dark:border-slate-800 z-50">
       <div className="max-w-md mx-auto flex justify-around items-center py-2 pb-[env(safe-area-inset-bottom,8px)]">
         {tabs.map(({ id, path, label, icon: Icon }) => {
           const isActive = location.pathname === path;
@@ -20,7 +20,7 @@ const BottomNav = () => {
             <Link
               key={id}
               to={path}
-              className={`flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-xl transition-colors ${isActive ? 'text-nav-active' : 'text-nav-inactive'
+              className={`flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-xl transition-colors ${isActive ? 'text-nav-active dark:text-primary' : 'text-nav-inactive dark:text-slate-400'
                 }`}
             >
               <Icon size={22} strokeWidth={isActive ? 2.5 : 1.8} />

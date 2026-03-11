@@ -1,10 +1,13 @@
-import { RotateCcw, MapPin, LogIn, LogOut, User } from 'lucide-react';
+import { RotateCcw, MapPin, LogIn, LogOut, User, Moon, Sun } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { useAppStore } from '@/store/useAppStore';
+import { Switch } from '@/components/ui/switch';
 
 const SettingsPage = () => {
   const [locationStatus, setLocationStatus] = useState<string>('확인 중...');
   const { user, loading, signInWithGoogle, signOut } = useAuth();
+  const { theme, setTheme } = useAppStore();
 
   useEffect(() => {
     if ('geolocation' in navigator) {
@@ -28,7 +31,7 @@ const SettingsPage = () => {
 
       <div className="space-y-3">
         {/* 로그인/프로필 영역 */}
-        <div className="bg-card rounded-2xl p-4 category-shadow">
+        <div className="bg-card dark:bg-slate-800 rounded-2xl p-4 category-shadow dark:shadow-none">
           {loading ? (
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-secondary animate-pulse" />
@@ -44,7 +47,7 @@ const SettingsPage = () => {
                     className="w-10 h-10 rounded-xl object-cover"
                   />
                 ) : (
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
                     <User size={20} className="text-primary" />
                   </div>
                 )}
@@ -68,7 +71,7 @@ const SettingsPage = () => {
               onClick={signInWithGoogle}
               className="w-full flex items-center gap-3"
             >
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
                 <LogIn size={20} className="text-primary" />
               </div>
               <div className="text-left">
@@ -79,9 +82,28 @@ const SettingsPage = () => {
           )}
         </div>
 
-        <div className="bg-card rounded-2xl p-4 category-shadow">
+        {/* 다크모드 설정 영역 */}
+        <div className="bg-card dark:bg-slate-800 rounded-2xl p-4 category-shadow dark:shadow-none">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
+                {theme === 'dark' ? <Moon size={20} className="text-primary" /> : <Sun size={20} className="text-primary" />}
+              </div>
+              <div className="text-left">
+                <h3 className="font-semibold text-foreground text-sm">다크 모드</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">화면 테마를 변경합니다</p>
+              </div>
+            </div>
+            <Switch 
+              checked={theme === 'dark'} 
+              onCheckedChange={(c) => setTheme(c ? 'dark' : 'light')} 
+            />
+          </div>
+        </div>
+
+        <div className="bg-card dark:bg-slate-800 rounded-2xl p-4 category-shadow dark:shadow-none">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-mint flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-mint dark:bg-mint/20 flex items-center justify-center">
               <MapPin size={20} className="text-primary" />
             </div>
             <div>
@@ -93,9 +115,9 @@ const SettingsPage = () => {
 
         <button
           onClick={handleReset}
-          className="w-full bg-card rounded-2xl p-4 category-shadow flex items-center gap-3"
+          className="w-full bg-card dark:bg-slate-800 rounded-2xl p-4 category-shadow dark:shadow-none flex items-center gap-3"
         >
-          <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-secondary dark:bg-secondary/20 flex items-center justify-center">
             <RotateCcw size={20} className="text-accent" />
           </div>
           <div className="text-left">

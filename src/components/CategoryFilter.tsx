@@ -17,13 +17,13 @@ const CategoryFilter = () => {
             key={cat}
             whileTap={{ scale: 0.92 }}
             onClick={() => toggleCategory(cat)}
-            className="relative flex flex-col items-center gap-1.5 rounded-2xl bg-category px-4 py-3 min-w-[72px] category-shadow transition-colors"
+            className="relative flex flex-col items-center gap-1.5 rounded-2xl bg-category dark:bg-slate-800 px-4 py-3 min-w-[72px] category-shadow dark:shadow-none transition-colors"
           >
             {count > 0 && (
               <motion.span
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-badge text-badge-foreground text-xs font-bold flex items-center justify-center ring-2 ring-background"
+                className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-badge dark:bg-accent text-badge-foreground dark:text-accent-foreground text-xs font-bold flex items-center justify-center ring-2 ring-background dark:ring-slate-900"
               >
                 {count}
               </motion.span>

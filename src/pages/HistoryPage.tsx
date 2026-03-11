@@ -47,7 +47,7 @@ const HistoryPage = () => {
       ) : (
         <div className="space-y-3">
           {displayedHistory.map((item) => (
-            <div key={item.id} className="bg-card rounded-2xl p-4 category-shadow">
+            <div key={item.id} className="bg-card dark:bg-slate-800 rounded-2xl p-4 category-shadow dark:shadow-none">
               <div className="flex justify-between items-start">
                 <div className="flex-1">
                   <h3 className="font-bold text-foreground">{item.restaurant.name}</h3>

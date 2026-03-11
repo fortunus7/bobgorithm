@@ -31,7 +31,7 @@ const RecommendationResult = () => {
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ type: 'spring', damping: 22 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-md bg-card rounded-3xl p-6 relative pt-16 flex flex-col max-h-[90vh]"
+            className="w-full max-w-md bg-card dark:bg-slate-800 rounded-3xl p-6 relative pt-16 flex flex-col max-h-[90vh]"
           >
             {/* 바비 캐릭터 */}
             <motion.div
@@ -40,7 +40,7 @@ const RecommendationResult = () => {
               transition={{ type: 'spring', damping: 12, delay: 0.1 }}
               className="absolute -top-36 left-1/2 -translate-x-1/2 pointer-events-none"
             >
-              <div className="w-72 h-72 rounded-full bg-primary/20 flex items-center justify-center">
+              <div className="w-72 h-72 rounded-full bg-primary/20 dark:bg-primary/30 flex items-center justify-center">
                 <img src={babiCharacter} alt="바비" className="w-60 h-60 object-contain" />
               </div>
             </motion.div>
@@ -87,11 +87,15 @@ const RecommendationResult = () => {
               <button
                 onClick={() => {
                   if (historyEntry) {
-                    isFav ? removeFromFavorite(historyEntry.id) : addToFavorite(historyEntry.id);
+                    if (isFav) {
+                      removeFromFavorite(historyEntry.id);
+                    } else {
+                      addToFavorite(historyEntry.id);
+                    }
                   }
                 }}
                 className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-semibold transition-colors ${
-                  isFav ? 'bg-secondary text-secondary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                  isFav ? 'bg-secondary dark:bg-slate-700 text-secondary-foreground dark:text-white' : 'bg-muted dark:bg-slate-700 text-muted-foreground dark:text-slate-300 hover:bg-muted/80'
                 }`}
               >
                 <Heart size={18} className={isFav ? 'fill-accent text-accent' : ''} />
